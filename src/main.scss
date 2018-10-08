@@ -1,0 +1,16 @@
+
+
+@import "~bootstrap/scss/bootstrap";
+$fa-font-path: "~font-awesome/fonts";
+@import '~font-awesome/scss/font-awesome.scss';
+
+// your styles here
+
+code-editor .editor {
+	position: absolute;
+	top: 0px;
+	right: 50%;
+	left: 0;
+	width: 50%;
+	height: 100%;
+}
