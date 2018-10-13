@@ -33,11 +33,14 @@ export class CodeEditor extends Component {
     this.editor = ace.edit(this.getEditorSelector())
     this.editor.setTheme(`ace/theme/${this.theme}`);
     const session = this.editor.getSession()
-    session.setMode(`ace/mode/${this.mode}`);
+    session.setMode(`ace/mode/${this.mode}`)
     session.on('change', _.debounce(() => {
-      const event = new CustomEvent('change')
+      const event = new CustomEvent('change', {
+        bubbles: true
+      })
       this.dispatchEvent(event)
     }, this.delay))
+    session.setValue(this.initialContent || '')
   }
 
   render() {
@@ -49,6 +52,10 @@ export class CodeEditor extends Component {
   getValue () {
     return this.editor.getSession().getValue()
   }
+
+  setValue (content) {
+    this.editor.getSession().setValue(content)
+  }  
 }
 
 customElements.define('code-editor', CodeEditor)

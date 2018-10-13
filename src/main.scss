@@ -14,3 +14,13 @@ code-editor .editor {
 	width: 50%;
 	height: 100%;
 }
+
+pdf-viewer iframe {
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  right: 0;
+  top: 0;
+  bottom: 0; 
+}

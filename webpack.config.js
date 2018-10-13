@@ -3,6 +3,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCSSExtractPlugin = require('mini-css-extract-plugin')
 var {GenerateSW} = require('workbox-webpack-plugin')
 var CleanPlugin = require('clean-webpack-plugin')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
 
 
 
@@ -22,7 +23,15 @@ var envPresetConfig = {
 var plugins = [
   new HtmlWebpackPlugin({
     template: path.resolve(__dirname, 'src/index.html')
-  })
+  }),
+
+  new CopyWebpackPlugin([
+    {from: 'src/assets/font/roboto/Roboto-Italic.woff', to: ''},
+    {from: 'src/assets/font/roboto/Roboto-Regular.woff', to: ''},
+    {from: 'src/assets/font/roboto/Roboto-Medium.woff', to: ''},
+    {from: 'src/assets/font/roboto/Roboto-MediumItalic.woff', to: ''},
+    {context: 'src/assets/font/', from: '*.woff', to: ''}
+  ])
 ]
 
 module.exports = function (env) {
