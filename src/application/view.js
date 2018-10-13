@@ -32,6 +32,7 @@ const ApplicationView = View.extend({
 
   codeEditorChange() {    
     const content = this.editorEl.getValue()
+    localStorage.setItem('ddContent', content)
     this.pdfViewerEl.data = getDefinition(content)
   },
 
@@ -41,9 +42,6 @@ const ApplicationView = View.extend({
     }
     if (!this.editorEl) {
       this.editorEl = this.$('code-editor')[0]
-      this.editorEl.addEventListener('change', (e) => {
-        console.log('codeeditor change')
-      })
       this.editorEl.initialContent = localStorage.getItem('ddContent') || basicContent      
     }    
   },
