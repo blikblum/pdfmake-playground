@@ -1,3 +1,4 @@
+import '@webcomponents/webcomponentsjs/bundles/webcomponents-sd-ce'
 import { initElementClass } from 'snabbdom-element'
 
 const Component = initElementClass([
