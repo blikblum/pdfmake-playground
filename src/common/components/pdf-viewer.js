@@ -99,10 +99,14 @@ export class PdfViewer extends Component {
     this.pendingData = this.pendingData || changedProperties.has('data')
     if (this.pendingData && pdfMake && fontLoader.loaded) {
       this.pendingData = false
-      const pdfDocGenerator = pdfMake.createPdf(this.data)
-      pdfDocGenerator.getDataUrl((dataUrl) => {
-        this.querySelector('iframe').src = dataUrl
-      })
+      try {
+        const pdfDocGenerator = pdfMake.createPdf(this.data)
+        pdfDocGenerator.getDataUrl((dataUrl) => {
+          this.querySelector('iframe').src = dataUrl
+        })        
+      } catch (error) {
+        console.warn('error creting pdf:', error)
+      }      
     }
   }
 
