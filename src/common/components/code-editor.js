@@ -18,7 +18,7 @@ export class CodeEditor extends Component {
     this.editorId = editorCount++
     this.mode = 'javascript'
     this.theme = 'monokai'
-    this.delay = 200
+    this.delay = 500
   }
 
   getEditorSelector() {
@@ -32,7 +32,9 @@ export class CodeEditor extends Component {
   firstUpdated () {
     this.editor = ace.edit(this.getEditorSelector())
     this.editor.setTheme(`ace/theme/${this.theme}`);
+    this.editor.setShowPrintMargin(false)
     const session = this.editor.getSession()
+    session.setUseWrapMode(true)
     session.setMode(`ace/mode/${this.mode}`)
     session.on('change', _.debounce(() => {
       const event = new CustomEvent('change', {
