@@ -1,11 +1,11 @@
 import _ from 'underscore'
 import { Component } from "basecomponent";
 
-function fetchFont (fontURL) {
+function fetchFont (fontURL, isStandard) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest()
     request.open('GET', fontURL, true)
-    request.responseType = 'arraybuffer'
+    request.responseType = isStandard ? 'text' : 'arraybuffer'
 
     request.onload = function (e) {
       resolve(request.response)
@@ -19,9 +19,18 @@ function fetchFont (fontURL) {
 
 const allStyles = ['normal', 'bold', 'italics', 'bolditalics']
 
-class PdfFontLoader {
+const standardFonts = [
+  'Times-Roman', 'Times-Bold', 'Times-Italic', 'Times-BoldItalic', 
+  'Courier', 'Courier-Bold', 'Courier-Oblique', 'Courier-BoldOblique',
+  'Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Helvetica-BoldOblique',
+  'Symbol',
+  'ZapfDingbats'
+]  
+
+
+class PdfAssetsLoader {
   constructor () {
-    this.fontDefs = []
+    this.fontDefs = []    
     this.vfs = {}
     this.fonts = {}
   }
@@ -36,13 +45,20 @@ class PdfFontLoader {
         resolve()
       } else {
         const fetches = this.fontDefs.map(fontDef => {
-          return fetchFont(fontDef.URL || fontDef.fileName).then((data) => {
-            this.vfs[fontDef.fileName] = data
+          const isStandard = standardFonts.indexOf(fontDef.fileName) !== -1
+          const vfsPath = isStandard ? `../font/data/${fontDef.fileName}.afm` : fontDef.fileName
+          let fontURL = fontDef.URL
+          if (!fontURL) {
+            fontURL = isStandard ? `${fontDef.fileName}.afm` : fontDef.fileName
+          }
+          return fetchFont(fontURL, isStandard).then(data => {            
             const fontInfo = this.fonts[fontDef.name] || (this.fonts[fontDef.name] = {})
             const styles = fontDef.styles || allStyles
             styles.forEach(style => fontInfo[style] = fontDef.fileName)
+            this.vfs[vfsPath] = data
           })
         })
+
         Promise.all(fetches).then(() => {
           this.loaded = true          
           resolve()
@@ -52,8 +68,8 @@ class PdfFontLoader {
   }
 }
 
-let fontLoader = new PdfFontLoader()
-let fontLoaderLoad
+let assetsLoader = new PdfAssetsLoader()
+let assetsLoaderLoad
 let pdfMake
 let pdfMakeImport
 
@@ -65,14 +81,14 @@ export class PdfViewer extends Component {
   }
 
   static registerFont (fontDef) {
-    fontLoader.registerFont(fontDef)
+    assetsLoader.registerFont(fontDef)
   }
 
   constructor () {
     super()
-    if (!fontLoaderLoad) {      
-      fontLoaderLoad = fontLoader.load()
-      fontLoaderLoad.then(() => {
+    if (!assetsLoaderLoad) {      
+      assetsLoaderLoad = assetsLoader.load()
+      assetsLoaderLoad.then(() => {
         this.requestUpdate()
       }).catch(err => {
         throw new Error(`Error loading fonts: ${err}`)
@@ -82,8 +98,8 @@ export class PdfViewer extends Component {
       pdfMakeImport = import('pdfmake-lite/build/pdfmake')
       pdfMakeImport.then(module => {
         pdfMake = module.default
-        pdfMake.vfs = fontLoader.vfs
-        pdfMake.fonts = fontLoader.fonts
+        pdfMake.vfs = assetsLoader.vfs
+        pdfMake.fonts = assetsLoader.fonts
         this.requestUpdate()
       }).catch(err => {
         throw new Error(`Error loading pdfmake module: ${err}`)
@@ -97,7 +113,7 @@ export class PdfViewer extends Component {
 
   updated(changedProperties) {
     this.pendingData = this.pendingData || changedProperties.has('data')
-    if (this.pendingData && pdfMake && fontLoader.loaded) {
+    if (this.pendingData && pdfMake && assetsLoader.loaded) {
       this.pendingData = false
       try {
         const pdfDocGenerator = pdfMake.createPdf(this.data)
@@ -105,7 +121,7 @@ export class PdfViewer extends Component {
           this.querySelector('iframe').src = dataUrl
         })        
       } catch (error) {
-        console.warn('error creting pdf:', error)
+        console.warn('Error creating pdf:', error)
       }      
     }
   }
@@ -113,7 +129,7 @@ export class PdfViewer extends Component {
   render() {    
     if (!this.data) {
       return <div>Waiting for data...</div>
-    } else if (!pdfMake || !fontLoader.loaded) {
+    } else if (!pdfMake || !assetsLoader.loaded) {
       return <div>Loading component...</div>
     }
     return <iframe></iframe>

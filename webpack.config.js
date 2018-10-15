@@ -26,11 +26,12 @@ var plugins = [
   }),
 
   new CopyWebpackPlugin([
-    {from: 'src/assets/font/roboto/Roboto-Italic.woff', to: ''},
-    {from: 'src/assets/font/roboto/Roboto-Regular.woff', to: ''},
-    {from: 'src/assets/font/roboto/Roboto-Medium.woff', to: ''},
-    {from: 'src/assets/font/roboto/Roboto-MediumItalic.woff', to: ''},
-    {context: 'src/assets/font/', from: '*.woff', to: ''}
+    {from: 'src/assets/fonts/roboto/Roboto-Italic.woff', to: ''},
+    {from: 'src/assets/fonts/roboto/Roboto-Regular.woff', to: ''},
+    {from: 'src/assets/fonts/roboto/Roboto-Medium.woff', to: ''},
+    {from: 'src/assets/fonts/roboto/Roboto-MediumItalic.woff', to: ''},
+    {context: 'src/assets/fonts/standard/', from: '*.afm', to: ''},
+    {context: 'src/assets/fonts/', from: '*.woff', to: ''}
   ])
 ]
 
