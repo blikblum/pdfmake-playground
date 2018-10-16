@@ -33,6 +33,7 @@ class PdfAssetsLoader {
     this.fontDefs = []    
     this.vfs = {}
     this.fonts = {}
+    this.rawFiles = []
   }
   
   registerFont (fontDef) {
@@ -55,7 +56,14 @@ class PdfAssetsLoader {
             const fontInfo = this.fonts[fontDef.name] || (this.fonts[fontDef.name] = {})
             const styles = fontDef.styles || allStyles
             styles.forEach(style => fontInfo[style] = fontDef.fileName)
-            this.vfs[vfsPath] = data
+            if (isStandard) {
+              this.rawFiles.push({
+                name: vfsPath,
+                data: data
+              })
+            } else {
+              this.vfs[vfsPath] = data
+            }            
           })
         })
 
@@ -68,10 +76,9 @@ class PdfAssetsLoader {
   }
 }
 
-let assetsLoader = new PdfAssetsLoader()
-let assetsLoaderLoad
+const assetsLoader = new PdfAssetsLoader()
 let pdfMake
-let pdfMakeImport
+let dependenciesLoaded = false
 
 export class PdfViewer extends Component {
   static properties = {
@@ -86,23 +93,24 @@ export class PdfViewer extends Component {
 
   constructor () {
     super()
-    if (!assetsLoaderLoad) {      
-      assetsLoaderLoad = assetsLoader.load()
-      assetsLoaderLoad.then(() => {
-        this.requestUpdate()
-      }).catch(err => {
+    if (!dependenciesLoaded) {
+      dependenciesLoaded = true
+      const assetsLoaderLoad = assetsLoader.load()
+      assetsLoaderLoad.catch(err => {
         throw new Error(`Error loading fonts: ${err}`)
       })
-    }
-    if (!pdfMakeImport) {
-      pdfMakeImport = import('pdfmake-lite/build/pdfmake')
-      pdfMakeImport.then(module => {
+      const pdfMakeImport = import('pdfmake-lite/build/pdfmake')
+      pdfMakeImport.catch(err => {
+        throw new Error(`Error loading pdfmake module: ${err}`)
+      })
+      Promise.all([pdfMakeImport, assetsLoaderLoad]).then(([module]) => {
         pdfMake = module.default
         pdfMake.vfs = assetsLoader.vfs
         pdfMake.fonts = assetsLoader.fonts
+        assetsLoader.rawFiles.forEach(file => {
+          pdfMake.fs.writeFileSync(file.name, file.data)
+        })
         this.requestUpdate()
-      }).catch(err => {
-        throw new Error(`Error loading pdfmake module: ${err}`)
       })
     }
   }
