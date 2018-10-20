@@ -97,7 +97,8 @@ module.exports = function (env) {
     }]
     },
     resolve: {
-      modules: [path.resolve(__dirname, './src/common'), 'node_modules']
+      modules: [path.resolve(__dirname, './src/common'), 'node_modules'],
+      symlinks: false
     },    
     plugins: plugins,
     devtool: isProd ? prodDevTool : devDevTool

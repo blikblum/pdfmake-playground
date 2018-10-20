@@ -22,6 +22,7 @@
     "marionette.renderers": "^0.5.0",
     "marionette.routing": "^0.9.0",
     "pdfmake-lite": "^0.1.38",
+    "pdfmake-utils": "^0.1.0",
     "popper.js": "^1.12.9",
     "snabbdom": "^0.7.1",
     "snabbdom-element": "^0.2.0",

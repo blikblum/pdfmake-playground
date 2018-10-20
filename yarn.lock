@@ -5021,6 +5021,13 @@ pdfmake-lite@^0.1.38:
     linebreak "^0.3.0"
     pdfkit "^0.8.3"
 
+pdfmake-utils@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/pdfmake-utils/-/pdfmake-utils-0.1.0.tgz#f8874b6bb6bd298ffcf4b7591ca4d0d5b06b2a7b"
+  integrity sha512-QOhXD6djxqjFgP+AWyhCxFv8Qw9uFLnM73SYfM+vKcDLSrEDJV1xvd70I5CtQXKMtbKRPo7VwFBkffZRzVIoUw==
+  dependencies:
+    raw-element "^0.1.0"
+
 performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
@@ -5529,6 +5536,13 @@ range-parser@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.2.0.tgz#f49be6b487894ddc40dcc94a322f611092e00d5e"
   integrity sha1-9JvmtIeJTdxA3MlKMi9hEJLgDV4=
+
+raw-element@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/raw-element/-/raw-element-0.1.0.tgz#bc87da3062108c0133f519fa0ab589a481f223b6"
+  integrity sha512-KesG4XNEPW+dEPjt4ra4cZADfPgi3yVdyXrhIXeUlMdEpXbquXFqm8Yg4I3Qot4HtewvSwdvbzaAvHbVpMXTBg==
+  dependencies:
+    "@polymer/lit-element" "^0.6.2"
 
 rc@^1.0.1, rc@^1.1.6, rc@^1.2.7:
   version "1.2.8"

@@ -1,5 +1,5 @@
 import 'components/code-editor'
-import {PdfViewer} from 'components/pdf-viewer'
+import {PdfViewer} from 'pdfmake-utils'
 
 PdfViewer.registerFont({name: 'Roboto', fileName: 'Roboto-Regular.woff', styles: ['normal']})
 PdfViewer.registerFont({name: 'Roboto', fileName: 'Roboto-Italic.woff', styles: ['italics']})
@@ -11,3 +11,5 @@ PdfViewer.registerFont({name: 'Times', fileName: 'Times-Italic', styles: ['itali
 PdfViewer.registerFont({name: 'Times', fileName: 'Times-Bold', styles: ['bold']})
 PdfViewer.registerFont({name: 'Times', fileName: 'Times-BoldItalic', styles: ['bolditalics']})
 PdfViewer.registerFont({name: 'ZapfDingbats', fileName: 'ZapfDingbats'})
+
+customElements.define('pdf-viewer', PdfViewer)
