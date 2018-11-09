@@ -31,7 +31,8 @@ var plugins = [
     {from: 'src/assets/fonts/roboto/Roboto-Medium.woff', to: ''},
     {from: 'src/assets/fonts/roboto/Roboto-MediumItalic.woff', to: ''},
     {context: 'src/assets/fonts/standard/', from: '*.afm', to: ''},
-    {context: 'src/assets/fonts/', from: '*.woff', to: ''}
+    {context: 'src/assets/fonts/', from: '*.woff', to: ''},
+    {context: 'src/assets/images/', from: '*.png', to: ''}
   ])
 ]
 

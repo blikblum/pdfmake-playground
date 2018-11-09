@@ -12,4 +12,6 @@ PdfViewer.registerFont({name: 'Times', fileName: 'Times-Bold', styles: ['bold']}
 PdfViewer.registerFont({name: 'Times', fileName: 'Times-BoldItalic', styles: ['bolditalics']})
 PdfViewer.registerFont({name: 'ZapfDingbats', fileName: 'ZapfDingbats'})
 
+PdfViewer.registerFile({name: 'brasao-bahia.png'})
+
 customElements.define('pdf-viewer', PdfViewer)
