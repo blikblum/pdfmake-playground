@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "webpack-serve",
+    "dev-dist": "webpack --run-dev --mode development",
     "prod": "webpack --run-prod --mode production"
   },
   "dependencies": {
