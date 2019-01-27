@@ -1,13 +1,10 @@
 import './setup/main'
 import Radio from 'backbone.radio'
-import { Region } from 'backbone.marionette'
-import { createRouter, middleware } from 'marionette.routing'
+import { Router } from 'marionette.routing'
 import { ApplicationRoute } from './application/route';
 
 
-const router = createRouter({log: true, logError: true})
-
-router.rootRegion = new Region({el: 'main.application'})
+const router = new Router({log: true, logError: true}, 'main.application')
 
 router.map(function (route) {  
   route('app', {path: '/', routeClass: ApplicationRoute}, function () {
@@ -16,10 +13,9 @@ router.map(function (route) {
 
 
 Radio.channel('router').on('transition:error', (transition, err) => {
-  console.error(err)
+  console.error('router:transition', err)
 })
 
-router.use(middleware);
 
 router.listen();
 
